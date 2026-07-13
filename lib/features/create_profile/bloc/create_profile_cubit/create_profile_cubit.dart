@@ -1,10 +1,14 @@
 import 'package:emvigo_test/core/base/base_bloc/base_bloc.dart';
 import 'package:emvigo_test/core/utils/validators.dart';
+import 'package:emvigo_test/data/models/entities/profile_model.dart';
+import 'package:emvigo_test/data/repo/profile_repo.dart';
 
 part 'create_profile_state.dart';
 
 class CreateProfileCubit extends Cubit<CreateProfileState> {
-  CreateProfileCubit() : super(const CreateProfileState());
+  final ProfileRepo _profileRepo;
+
+  CreateProfileCubit(this._profileRepo) : super(const CreateProfileState());
 
   void firstNameChanged(String value) => emit(state.copyWith(firstName: value));
 
@@ -41,8 +45,21 @@ class CreateProfileCubit extends Cubit<CreateProfileState> {
 
     emit(state.copyWith(status: Status.loading));
 
-    await Future.delayed(const Duration(milliseconds: 600));
+    final result = await _profileRepo.saveProfile(
+      ProfileModel(
+        firstName: state.firstName,
+        lastName: state.lastName,
+        dateOfBirth: state.dateOfBirth!,
+        gender: state.gender,
+        nationality: state.nationality,
+        language: state.language,
+      ),
+    );
 
-    emit(state.copyWith(status: Status.success));
+    if (result.isSuccess) {
+      emit(state.copyWith(status: Status.success));
+    } else {
+      emit(state.copyWith(status: Status.error, error: result.error));
+    }
   }
 }

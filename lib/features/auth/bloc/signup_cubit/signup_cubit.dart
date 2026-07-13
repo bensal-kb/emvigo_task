@@ -9,12 +9,12 @@ class SignupCubit extends Cubit<SignupState> {
 
   SignupCubit(this._authRepo) : super(const SignupState());
 
-  void emailChanged(String value) => emit(state.copyWith(email: value));
+  void emailChanged(String value) => emit(state.copyWith(email: value, status: Status.initial));
 
-  void passwordChanged(String value) => emit(state.copyWith(password: value));
+  void passwordChanged(String value) => emit(state.copyWith(password: value, status: Status.initial));
 
   void confirmPasswordChanged(String value) =>
-      emit(state.copyWith(confirmPassword: value));
+      emit(state.copyWith(confirmPassword: value, status: Status.initial));
 
   Future<void> submit() async {
     final error =

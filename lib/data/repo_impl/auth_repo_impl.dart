@@ -9,7 +9,10 @@ class AuthRepoImpl implements AuthRepo {
   AuthRepoImpl(this._firebaseAuth);
 
   @override
-  Future<Response<String>> signUp({required String email, required String password}) async {
+  Future<Response<String>> signUp({
+    required String email,
+    required String password,
+  }) async {
     try {
       final credential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
@@ -22,7 +25,10 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Response<String>> signIn({required String email, required String password}) async {
+  Future<Response<String>> signIn({
+    required String email,
+    required String password,
+  }) async {
     try {
       final credential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -42,4 +48,7 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   String? get currentUserId => _firebaseAuth.currentUser?.uid;
+
+  @override
+  String? get currentUserEmail => _firebaseAuth.currentUser?.email;
 }

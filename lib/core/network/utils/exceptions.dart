@@ -45,18 +45,24 @@ Error handleDioException(DioException e) {
     case DioExceptionType.connectionTimeout:
     case DioExceptionType.sendTimeout:
     case DioExceptionType.receiveTimeout:
-      return const ConnectionError(message: 'Connection timed out. Please try again.');
+      return const ConnectionError(
+        message: 'Connection timed out. Please try again.',
+      );
     case DioExceptionType.connectionError:
       return const ConnectionError(message: 'No internet connection.');
     default:
-      return ServerError(message: 'Something went wrong (${statusCode ?? 'unknown'}).');
+      return ServerError(
+        message: 'Something went wrong (${statusCode ?? 'unknown'}).',
+      );
   }
 }
 
 Error handleFirebaseAuthException(FirebaseAuthException e) {
   switch (e.code) {
     case 'email-already-in-use':
-      return const InvalidError(message: 'An account already exists for that email.');
+      return const InvalidError(
+        message: 'An account already exists for that email.',
+      );
     case 'invalid-email':
       return const InvalidError(message: 'Enter a valid email address.');
     case 'weak-password':
@@ -68,6 +74,24 @@ Error handleFirebaseAuthException(FirebaseAuthException e) {
     case 'network-request-failed':
       return const ConnectionError(message: 'No internet connection.');
     default:
-      return ServerError(message: e.message ?? 'Something went wrong. Please try again.');
+      return ServerError(
+        message: e.message ?? 'Something went wrong. Please try again.',
+      );
+  }
+}
+
+Error handleFirestoreException(FirebaseException e) {
+  switch (e.code) {
+    case 'permission-denied':
+      return const InvalidError(
+        message: 'You do not have permission to perform this action.',
+      );
+    case 'unavailable':
+    case 'network-request-failed':
+      return const ConnectionError(message: 'No internet connection.');
+    default:
+      return ServerError(
+        message: e.message ?? 'Something went wrong. Please try again.',
+      );
   }
 }

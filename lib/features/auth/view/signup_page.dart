@@ -30,7 +30,7 @@ class _SignupView extends StatelessWidget {
       child: BlocConsumer<SignupCubit, SignupState>(
         listener: (context, state) {
           if (state.isSuccess) {
-            context.go(Routes.createProfile);
+            context.go(Routes.main);
           } else if (state.isError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

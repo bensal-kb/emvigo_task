@@ -13,7 +13,7 @@ authenticated.
 |---|---|
 | Login | Existing user signs in with email/password, or switches to Signup |
 | Signup | New user registers with email/password |
-| Create Profile | One-time profile setup shown immediately after a successful Signup |
+| Create Profile | One-time profile setup, shown only when Home detects no saved profile |
 | Home Page | Landing screen for authenticated users showing their Firestore profile data, with a Logout option |
 
 ## 3. Screen Specifications
@@ -46,15 +46,18 @@ Login.
 
 - **Actions:** "SIGNUP" button; "Already have account, **SignIn**" link.
 - **Navigation:**
-  - Signup success → Create Profile.
+  - Signup success → Home Page (not Create Profile — see §3.3 for when Create Profile appears).
   - "SignIn" link → Login screen.
 
 ### 3.3 Create Profile
 
-Shown once, immediately after a successful Signup. Per `designs/create_account.png`: headline
-"Create your Profile", subtext "Create your profile with some basic information", back arrow at
-top-left. Fields are grouped under labels ("What's your Name", "What's your date of birth", etc.);
-First/Last Name sit side by side with helper text "First name is only visible on your profile."
+Not reached directly from Signup. Instead, Home Page checks whether a profile document exists for
+the signed-in user (Firestore `users/{uid}`); if none exists, Home redirects here. This covers both
+a brand-new signup (no profile yet) and a returning login where profile creation was never
+completed. Per `designs/create_account.png`: headline "Create your Profile", subtext "Create your
+profile with some basic information", back arrow at top-left. Fields are grouped under labels
+("What's your Name", "What's your date of birth", etc.); First/Last Name sit side by side with
+helper text "First name is only visible on your profile."
 
 | Field | Type | Required |
 |---|---|---|
@@ -71,8 +74,10 @@ First/Last Name sit side by side with helper text "First name is only visible on
 
 ### 3.4 Home Page
 
-- Displays the signed-in user's data (name, DOB, gender, nationality, languages) fetched from their
-  Firestore profile document, alongside the existing placeholder Home widgets.
+- On load, checks Firestore for the signed-in user's profile document.
+  - No document → redirect to Create Profile.
+  - Document found → displays the signed-in user's data (email, name, DOB, gender, nationality,
+    languages), alongside the existing placeholder Home widgets.
 - **Actions:** "Logout" option.
 - **Navigation:**
   - Logout → sign out of Firebase Auth, clear local session → Login screen.
@@ -82,12 +87,10 @@ First/Last Name sit side by side with helper text "First name is only visible on
 ```
 Login  ⇄  Signup
   │           │
-  │           ▼
-  │     Create Profile
-  │           │
   ▼           ▼
-       Home Page
-           │
+       Home Page ──(no profile found)──▶ Create Profile
+           │                                   │
+           │◀──────────(profile saved)─────────┘
       (Logout)
            │
            ▼

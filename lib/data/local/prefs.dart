@@ -14,10 +14,12 @@ class Prefs {
 
   // Auth
   String? getAuthToken() => _prefs.getString(_keyAuthToken);
-  Future<void> setAuthToken(String token) => _prefs.setString(_keyAuthToken, token);
+  Future<void> setAuthToken(String token) =>
+      _prefs.setString(_keyAuthToken, token);
 
   String? getRefreshToken() => _prefs.getString(_keyRefreshToken);
-  Future<void> setRefreshToken(String token) => _prefs.setString(_keyRefreshToken, token);
+  Future<void> setRefreshToken(String token) =>
+      _prefs.setString(_keyRefreshToken, token);
 
   Future<void> clearAuth() async {
     await _prefs.remove(_keyAuthToken);

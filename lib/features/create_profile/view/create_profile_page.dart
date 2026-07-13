@@ -26,7 +26,7 @@ class CreateProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CreateProfileCubit(),
+      create: (_) => CreateProfileCubit(sl()),
       child: const _CreateProfileView(),
     );
   }
@@ -63,7 +63,7 @@ class _CreateProfileView extends StatelessWidget {
                     if (context.canPop()) {
                       context.pop();
                     } else {
-                      context.go(Routes.signup);
+                      context.go(Routes.main);
                     }
                   },
                 ),

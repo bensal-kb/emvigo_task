@@ -13,7 +13,7 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (_) => LoginCubit(), child: const _LoginView());
+    return BlocProvider(create: (_) => LoginCubit(sl()), child: const _LoginView());
   }
 }
 
@@ -23,6 +23,7 @@ class _LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BasePage(
+      safeAreaBottom: true,
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.isSuccess) {
@@ -101,10 +102,10 @@ class _LoginView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Spacer(flex: 10,),
                     ],
                   ),
                 ),
+                const Spacer(flex: 10,),
               ],
             ),
           );
