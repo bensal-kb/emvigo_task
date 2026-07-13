@@ -10,6 +10,7 @@ class CreateProfileState extends BaseState {
     this.gender = 'Male',
     this.nationality = 'Indian',
     this.language = 'English',
+    this.loggedOut = false,
   });
 
   final String firstName;
@@ -18,6 +19,7 @@ class CreateProfileState extends BaseState {
   final String gender;
   final String nationality;
   final String language;
+  final bool loggedOut;
 
   @override
   List<Object?> get props => [
@@ -29,6 +31,7 @@ class CreateProfileState extends BaseState {
     gender,
     nationality,
     language,
+    loggedOut,
   ];
 
   CreateProfileState copyWith({
@@ -40,6 +43,7 @@ class CreateProfileState extends BaseState {
     String? gender,
     String? nationality,
     String? language,
+    bool? loggedOut,
   }) {
     return CreateProfileState(
       state: status ?? state,
@@ -50,6 +54,7 @@ class CreateProfileState extends BaseState {
       gender: gender ?? this.gender,
       nationality: nationality ?? this.nationality,
       language: language ?? this.language,
+      loggedOut: loggedOut ?? this.loggedOut,
     );
   }
 }

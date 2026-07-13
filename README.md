@@ -46,9 +46,10 @@ lib/
 
 | Document | Purpose |
 |---|---|
+| [docs/BUILD_AND_RUN.md](docs/BUILD_AND_RUN.md) | Prerequisites, Firebase setup, running and building the app |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Layer rules and data flow |
 | [docs/FEATURE_GUIDE.md](docs/FEATURE_GUIDE.md) | Step-by-step: adding a new feature |
 | [docs/CUBIT_GUIDE.md](docs/CUBIT_GUIDE.md) | Writing cubits and states |
 | [docs/REPO_GUIDE.md](docs/REPO_GUIDE.md) | Writing repos and use cases |
 | [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md) | Naming, formatting, conventions |
-# emvigo_task
+| [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md) | Product/feature requirements |

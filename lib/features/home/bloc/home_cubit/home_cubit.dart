@@ -17,8 +17,6 @@ class HomeCubit extends Cubit<BaseState> {
     emit(const LoadingState());
 
     final result = await _profileRepo.getProfile();
-print('sdjfldsfja');
-print(result.data);
     if (result.isSuccess) {
       if (result.data == null) {
         emit(const ProfileMissingState());

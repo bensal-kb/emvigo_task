@@ -26,7 +26,7 @@ class CreateProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CreateProfileCubit(sl()),
+      create: (_) => CreateProfileCubit(sl(), sl()),
       child: const _CreateProfileView(),
     );
   }
@@ -42,7 +42,7 @@ class _CreateProfileView extends StatelessWidget {
       child: BlocConsumer<CreateProfileCubit, CreateProfileState>(
         listener: (context, state) {
           if (state.isSuccess) {
-            context.go(Routes.main);
+            context.go(state.loggedOut ? Routes.signIn : Routes.main);
           } else if (state.isError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -58,16 +58,12 @@ class _CreateProfileView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _BackButton(
-                  onTap: () {
-                    if (context.canPop()) {
-                      context.pop();
-                    } else {
-                      context.go(Routes.main);
-                    }
-                  },
-                ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 25),
+                _BackButton(onTap: (){
+                  cubit.logout();
+                  context.go(Routes.main);
+                }),
+                const SizedBox(height: 35),
                 Text.rich(
                   TextSpan(
                     style: AppTextStyles.headline(color: context.theme.text),
@@ -80,7 +76,7 @@ class _CreateProfileView extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 27),
                 Text(
                   'Create your profile with some basic information',
                   style: AppTextStyles.body(
@@ -90,7 +86,7 @@ class _CreateProfileView extends StatelessWidget {
                 ),
                 const SizedBox(height: 28),
                 const _FieldLabel("What's your Name"),
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 Row(
                   children: [
                     Expanded(
@@ -99,7 +95,7 @@ class _CreateProfileView extends StatelessWidget {
                         onChanged: cubit.firstNameChanged,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 15),
                     Expanded(
                       child: AppTextField(
                         hintText: 'Last Name',
@@ -108,7 +104,7 @@ class _CreateProfileView extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 Text(
                   'First name is only visible on your profile.',
                   style: AppTextStyles.body(
@@ -116,16 +112,16 @@ class _CreateProfileView extends StatelessWidget {
                     fontSize: 12,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 27),
                 const _FieldLabel("What's your date of birth"),
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 AppDateField(
                   date: state.dateOfBirth,
                   onChanged: cubit.dateOfBirthChanged,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 27),
                 const _FieldLabel("What's your gender"),
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 RadioGroup<String>(
                   groupValue: state.gender,
                   onChanged: (value) {
@@ -138,7 +134,7 @@ class _CreateProfileView extends StatelessWidget {
                         value: 'Male',
                         onTap: () => cubit.genderChanged('Male'),
                       ),
-                      const SizedBox(width: 24),
+                      const SizedBox(width: 15),
                       _GenderOption(
                         label: 'Female',
                         value: 'Female',
@@ -147,31 +143,33 @@ class _CreateProfileView extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 27),
                 const _FieldLabel("What's your nationality"),
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 AppDropdownField<String>(
                   value: state.nationality,
                   items: _nationalities,
                   itemLabel: (item) => item,
                   onChanged: cubit.nationalityChanged,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 27),
                 const _FieldLabel('Languages spoken'),
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 AppDropdownField<String>(
                   value: state.language,
                   items: _languages,
                   itemLabel: (item) => item,
                   onChanged: cubit.languageChanged,
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 30),
                 AppButton(
                   label: 'Save',
                   uppercase: false,
                   isLoading: state.isLoading,
                   onPressed: cubit.submit,
                 ),
+                const SizedBox(height: 80),
+
               ],
             ),
           );
@@ -190,10 +188,7 @@ class _FieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: AppTextStyles.body(
-        color: context.theme.text,
-        fontWeight: FontWeight.w600,
-      ),
+      style: AppTextStyles.body(color: context.theme.hint),
     );
   }
 }
