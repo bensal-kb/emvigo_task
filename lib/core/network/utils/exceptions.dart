@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class Error implements Exception {
   final String? message;
@@ -49,5 +50,24 @@ Error handleDioException(DioException e) {
       return const ConnectionError(message: 'No internet connection.');
     default:
       return ServerError(message: 'Something went wrong (${statusCode ?? 'unknown'}).');
+  }
+}
+
+Error handleFirebaseAuthException(FirebaseAuthException e) {
+  switch (e.code) {
+    case 'email-already-in-use':
+      return const InvalidError(message: 'An account already exists for that email.');
+    case 'invalid-email':
+      return const InvalidError(message: 'Enter a valid email address.');
+    case 'weak-password':
+      return const InvalidError(message: 'Password is too weak.');
+    case 'user-not-found':
+    case 'wrong-password':
+    case 'invalid-credential':
+      return const InvalidError(message: 'Incorrect email or password.');
+    case 'network-request-failed':
+      return const ConnectionError(message: 'No internet connection.');
+    default:
+      return ServerError(message: e.message ?? 'Something went wrong. Please try again.');
   }
 }

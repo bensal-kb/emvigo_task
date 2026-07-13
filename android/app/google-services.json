@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "54370185852",
+    "project_id": "emvigo-7fbff",
+    "storage_bucket": "emvigo-7fbff.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54370185852:android:eb54424a3d44c931f48ff9",
+        "android_client_info": {
+          "package_name": "com.emvigo.app.emvigo_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9xiDvjfDRNe2kIM_SjrQtsOtcZ7BXLrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
